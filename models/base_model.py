@@ -30,23 +30,27 @@ class BaseModel:
     def __str__(self):
         """Override string to provide a better description."""
         # Create the ordered dictionary based on the desired order
-        desired_order = ["my_number", "name", "__class__", "updated_at", "id", "created_at"]
-        ordered_dict = {key: self.__dict__[key] for key in desired_order if key in self.__dict__}
+        desired_order = ["my_number", "name",  "__class__", "updated_at", "id",
+                         "created_at"]
+        ordered_dict = {key: self.__dict__[key] for key in desired_order
+                        if key in self.__dict__}
 
-        return "[{}] ({}) {}".format(self.__class__.__name__, self.id, ordered_dict)
+        return f"[{self.__class__.__name__}]({self.id}){ordered_dict}"
 
     def save(self):
-        """updates the public instance attribute updated_at with the current datetime"""
+        """update public instance attribute updated_at by current datetime"""
         self.updated_at = datetime.datetime.now()
 
     def to_dict(self):
-        """ returns a dictionary containing all keys/values of __dict__ of the instance """
+        """Return dictionary contains keys/values, __dict__, the instance """
         dict_rep = self.__dict__.copy()
         dict_rep['created_at'] = self.created_at.isoformat()
         dict_rep['updated_at'] = self.updated_at.isoformat()
         # Add the class type
         dict_rep['__class__'] = self.__class__.__name__
 
-        desired_order = ["my_number", "name", "__class__", "updated_at", "id", "created_at"]
-        ordered_dict = {key: dict_rep[key] for key in desired_order if key in dict_rep}
+        desired_order = ["my_number", "name", "__class__", "updated_at",
+                         "id", "created_at"]
+        ordered_dict = {key: dict_rep[key] for key in desired_order
+                        if key in dict_rep}
         return ordered_dict
