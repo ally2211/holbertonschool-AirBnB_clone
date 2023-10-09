@@ -5,6 +5,7 @@ Module Doc: Base Class for all other classes
 import json
 import datetime
 import uuid
+from models import storage
 
 
 class BaseModel:
@@ -34,6 +35,7 @@ class BaseModel:
             self.created_at = datetime.datetime.now()
             self.updated_at = self.created_at
             self.id = str(uuid.uuid4())
+            storage.new(self)
 
             """
             # Create the ordered dictionary based on the desired order
@@ -61,6 +63,7 @@ class BaseModel:
     def save(self):
         """update public instance attribute updated_at by current datetime"""
         self.updated_at = datetime.datetime.now()
+        storage.save()
 
     def to_dict(self):
         """Return dictionary contains keys/values, __dict__, the instance """
