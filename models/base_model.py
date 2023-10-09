@@ -17,16 +17,15 @@ class BaseModel:
         """
         function Desc:  init
         """
-       
+
         if kwargs:
             # Initialization when 'id' is provided in keyword arguments
+            date_format = "%Y-%m-%dT%H:%M:%S.%f"
             for key, value in kwargs.items():
-                if key == "my_number" and not isinstance(value, (int, type(None))):
-                    # This will raise an error if id is not an integer or None
-                    raise ValueError("id must be an integer or None")
                 if key != "__class__":
                     if key == "created_at" or key == "updated_at":
-                        setattr(self, key, datetime.datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f"))
+                        dv = datetime.datetime.strptime(value, date_format)
+                        setattr(self, key, dv)
                     else:
                         setattr(self, key, value)
         else:
@@ -35,20 +34,19 @@ class BaseModel:
             self.created_at = datetime.datetime.now()
             self.updated_at = self.created_at
             self.id = str(uuid.uuid4())
-            date_format = "%Y-%m-%dT%H:%M:%S.%f"
 
             """
             # Create the ordered dictionary based on the desired order
-            
-            selfdesired_order = ["id", "created_at", "my_number","updated_at", "name"]
+
+            selfdesired_order = ["id", "created_at", "my_number",
+            "updated_at", "name"]
             selfordered_dict = {}
-            
+
             for key in selfdesired_order:
                 if key in self.__dict__ and key != "__class__":
                     selfordered_dict[key] = self.__dict__[key]
-            
             self.__dict__ = selfordered_dict
-            """   
+            """
 
     def __str__(self):
         """Override string to provide a better description."""
