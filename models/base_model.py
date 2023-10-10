@@ -36,6 +36,7 @@ class BaseModel:
             self.updated_at = self.created_at
             self.id = str(uuid.uuid4())
             storage.new(self)
+            #print("in base init")
 
             """
             # Create the ordered dictionary based on the desired order
@@ -58,6 +59,7 @@ class BaseModel:
         ordered_dict = {key: self.__dict__[key] for key in desired_order
                         if key in self.__dict__}
 
+        #print("in base str")
         return f"[{self.__class__.__name__}]({self.id}){ordered_dict}"
 
     def save(self):
