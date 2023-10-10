@@ -16,6 +16,9 @@ class FileStorage:
     __objects = {}
 
     def __init__(self):
+        """
+        instantiates self
+        """
         self.__objects = {}
         #self.__file_path = FileStorage.__file_path
         #print("hello im in filestorage init")
@@ -27,6 +30,10 @@ class FileStorage:
     """
 
     def all(self):
+        """
+        returns all attributes in self
+        """
+        #print("in all")
         #if not self.__dict__:  # Check if the dictionary is empty
         if not os.path.exists(FileStorage.__file_path):
             return {} 
@@ -34,11 +41,17 @@ class FileStorage:
             return self.__dict__
 
     def new(self, obj):
+        """
+        creates new instance
+        """
         #print("hello in new")
         key = f"{obj.__class__.__name__}.{obj.id}"
         self.__objects[key] = obj.__dict__
         
     def save(self):
+        """
+        saves data to self obj
+        """
         #print("hello in save")
         serializable_objects = {}
     
@@ -56,6 +69,9 @@ class FileStorage:
             json.dump(serializable_objects, file)
 
     def reload(self):
+        """
+        reload reads json from file and stores it to self 
+        """
         #print("hello in reload")
         """Deserializes the JSON file to __objects
         if os.path.isfile(FileStorage.__file_path):
@@ -73,6 +89,8 @@ class FileStorage:
                     obj = BaseModel(**value)
                     FileStorage.__objects[key] = obj
         """ 
+        #print("reload")
+
         try:
             with open(self.__file_path, 'r') as file:
                 data = json.load(file)
@@ -82,4 +100,23 @@ class FileStorage:
             pass
             #self.__objects = {}
         
-        
+    def get(self, class_name, obj_id):
+        """
+        Retrieve one object based on its class and ID.
+        """
+        key = "{}.{}".format(class_name, obj_id)
+        return self.__objects.get(key, None)
+    
+    def all_in_console(self, class_name=None):
+        """Returns a dictionary of all objects, optionally filtered by class name."""
+        if class_name:
+            return {k: v for k, v in self.__objects.items() if class_name in k}
+        return self.__objects
+
+    def delete(self, class_name, obj_id):
+        """Deletes an instance based on its class name and ID."""
+        key = "{}.{}".format(class_name, obj_id)
+        #print(f"Attempting to delete key: {key}")
+        #print(f"Available keys: {self.__objects.keys()}")
+        if key in self.__objects:
+            del self.__objects[key]

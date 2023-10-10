@@ -36,7 +36,7 @@ class BaseModel:
             self.updated_at = self.created_at
             self.id = str(uuid.uuid4())
             storage.new(self)
-
+            
             """
             # Create the ordered dictionary based on the desired order
 
@@ -51,7 +51,10 @@ class BaseModel:
             """
 
     def __str__(self):
-        """Override string to provide a better description."""
+        """
+        Override string to provide a better description.
+        """
+        print("__str__ in basemodel")
         # Create the ordered dictionary based on the desired order
         desired_order = ["my_number", "name",  "__class__", "updated_at", "id",
                          "created_at"]
@@ -61,12 +64,18 @@ class BaseModel:
         return f"[{self.__class__.__name__}]({self.id}){ordered_dict}"
 
     def save(self):
-        """update public instance attribute updated_at by current datetime"""
+        """
+        update public instance attribute updated_at by current datetime
+        """
+        #print("save in basemodel")
         self.updated_at = datetime.datetime.now()
         storage.save()
 
     def to_dict(self):
-        """Return dictionary contains keys/values, __dict__, the instance """
+        """
+        Return dictionary contains keys/values, __dict__, the instance 
+        """
+        print("to dict method")
         dict_rep = self.__dict__.copy()
         dict_rep['created_at'] = self.created_at.isoformat()
         dict_rep['updated_at'] = self.updated_at.isoformat()
